@@ -5,6 +5,10 @@
                 type: String,
                 value: null,
             }
-        }
+        },
+        onUpdate: function(evt) {
+            this.fire('glycan-structure-update', evt);
+            evt.stopPropagation();
+        }.bind(this),
     };
 </script>
