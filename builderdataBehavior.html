@@ -1,13 +1,13 @@
 <script>
-    dataBehavior = {
+    builderdataBehavior = {
         properties: {
             data: {
                 type: String,
                 value: null,
             }
         },
-        onUpdate: function(evt) {
-            this.fire('glycan-structure-update', evt);
+        onChange: function(evt) {
+            this.fire('structure-exported', evt);
             evt.stopPropagation();
         }.bind(this),
     };
