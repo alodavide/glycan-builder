@@ -1,9 +1,9 @@
 <!-- Imports polymer -->
 <link rel="import" href="../polymer/polymer.html">
-
+<link rel="import" href="dataBehavior.html">
 <!-- Defines element markup -->
 <dom-module id="glycan-builder">
-    <template>
+    <template id="builder">
         <iframe id="__gwt_historyFrame" style="width:0;height:0;border:0;overflow:hidden" src="javascript:false"></iframe>
         <div id="fb" style="height:800px;width:800px"></div>
     </template>
@@ -16,14 +16,19 @@
         XMLHttpRequest.prototype.send = sendWithCredentials;
     </script>
 
-    <!-- Glycan Builder element -->
+
+
     <script>
     Polymer({
         is: 'glycan-builder',
-
+        behaviors: [dataBehavior],
         properties: {
             serverlocation:{
                 type: String
+            },
+
+            struct:{
+                type: String,
             }
         },
 
@@ -72,9 +77,19 @@
             document.getElementsByTagName('head')[0].appendChild(vaadinBootstrap);
         },
 
-        exportGlycanStructure: function(exportType, callBackFunction){
-            exportCanvas(exportType,callBackFunction);
+        exportGlycanStructure: function(){
+            exportCanvas("glycoct_condensed","glycanCallback");
         }
+
+
     });
     </script>
+
+    <script>
+        var glycanCallback = [];
+        glycanCallback.run = function(response) {
+            window.dataBehavior.data = response;
+        };
+    </script>
+
 </dom-module>
