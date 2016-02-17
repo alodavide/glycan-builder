@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <title>Glycan-builder</title>
+
+    <!-- Imports polyfill -->
+    <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <!-- Imports custom element -->
+    <link rel="import" href="glycan-builder.html">
+
+</head>
+<body>
+
+<!-- Runs custom element -->
+    <glycan-builder serverlocation="http://born:8080"></glycan-builder>
+    <button type="button" onclick='test();'>Click Me!</button>
+
+<script type="text/javascript">
+    // Usage
+    var myCallback = [];
+    myCallback.run = function(structure){
+        alert(structure);
+    }
+
+    test = function(){
+        var btn = document.querySelector("glycan-builder");
+        btn.exportGlycanStructure("glycoct_condensed","myCallback");
+    };
+
+    /*
+    * It is possible to use directly the function in glycanbuilder
+    * exportCanvas("glycoct_condensed","myCallback");
+    *
+    * The callback must be written and pass as a string.
+    * */
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!-- Imports polymer -->
+<link rel="import" href="../polymer/polymer.html">
+
+<!-- Defines element markup -->
+<dom-module id="glycan-builder">
+    <template>
+        <iframe id="__gwt_historyFrame" style="width:0;height:0;border:0;overflow:hidden" src="javascript:false"></iframe>
+        <div id="fb" style="height:800px;width:800px"></div>
+    </template>
+    <script>
+        XMLHttpRequest.prototype._originalSend = XMLHttpRequest.prototype.send;
+        var sendWithCredentials = function(data) {
+            this.withCredentials = true;
+            this._originalSend(data);
+        };
+        XMLHttpRequest.prototype.send = sendWithCredentials;
+    </script>
+
+    <!-- Glycan Builder element -->
+    <script>
+    Polymer({
+        is: 'glycan-builder',
+
+        properties: {
+            serverlocation:{
+                type: String
+            }
+        },
+
+        ready: function(){
+            var serverlocation = this.getAttribute("serverlocation");
+
+            //Add Vaadin library
+            var vaadinBootstrap = document.createElement("script")
+            vaadinBootstrap.type = "text/javascript";
+            vaadinBootstrap.src = serverlocation+"/GlycanBuilder/VAADIN/vaadinBootstrap.js";
+
+            //Really important: It waits until the js is loaded to fire up glycanbuilder
+            vaadinBootstrap.onload = function(){
+                vaadin.initApplication("fb", {
+                    "browserDetailsUrl": serverlocation+"/GlycanBuilder/",
+                    "serviceUrl": serverlocation+"/GlycanBuilder/",
+                    "widgetset": "ac.uk.icl.dell.vaadin.glycanbuilder.widgetset.GlycanbuilderWidgetset",
+                    "theme": "ucdb_2011theme",
+                    "versionInfo": {"vaadinVersion": "7.1.7"},
+                    "vaadinDir": serverlocation+"/GlycanBuilder/VAADIN/",
+                    "heartbeatInterval": 300,
+                    "debug": false,
+                    "standalone": false,
+                    "authErrMsg": {
+                        "message": "Take note of any unsaved data, "+
+                        "and <u>click here<\/u> to continue.",
+                        "caption": "Authentication problem"
+                    },
+                    "comErrMsg": {
+                        "message": "Take note of any unsaved data, "+
+                        "and <u>click here<\/u> to continue.",
+                        "caption": "Communication problem"
+                    },
+                    "sessExpMsg": {
+                        "message": "Take note of any unsaved data, "+
+                        "and <u>click here<\/u> to continue.",
+                        "caption": "Session Expired"
+                    }
+                });
+            };
+
+            //If it cannot load vaadinbootstrap.
+            vaadinBootstrap.onerror = function() {
+                alert("Failed to load the bootstrap JavaScript: VAADIN/vaadinBootstrap.js");
+            };
+            document.getElementsByTagName('head')[0].appendChild(vaadinBootstrap);
+        },
+
+        exportGlycanStructure: function(exportType, callBackFunction){
+            exportCanvas(exportType,callBackFunction);
+        }
+    });
+    </script>
+</dom-module>
